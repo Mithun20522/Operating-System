@@ -1,29 +1,23 @@
-To compile and run the program:-
-        
+PATCH FILE (Hello.patch) :
 
+First we have open a file which is located at --> 'arch/x86/entry/syscalls/syscall_64.tbl'
+Now we add a System_call at line 448 i.e --> 'kernel_2d_memcpy'
+I have used a .config file for compilation which is given in the refresher module section.
 
+syscall_define3:    --> i have used this to make my function (kernel_2d_memcpy).
+kernel_2d_memcpy: --> this syscall takes src pointer and dest pointer and number of bytes to be copied from user.
+Now we converted src and dest pointer to float pointers named (to and from).
+Now we created buffer float pointer with the help of kmalloc.
 
-Q1
-                *****WITH PROCESSESS*****
+Now we defined a variable named len which stores the number of floats to be copied, used 2 for loop to iterate over len:
+in first for loop each float by float we copied data from src to buffer then in second loop again by going over float by float we copied 
+data from buffer to dest pointer adderss. 
+Meanwhile if it results into error then we return -EFAULT otherwise, return 0.
+ 
 
-In this question , first we read the CSV file and access section and marks of 
-all the 6 assignments in string format and then by using stdtok we convert this string in token which is replaced in single 
-one-one word by (,) and then convert into int by using atoi() function.
+C CODE (Main.c):
 
-System calls:-
-a) fork()--> by using this we make a child process with id zero of parent process 
-             so in child process we calculate average of Sec-A and in parent process we calculate average of sec-B.
-b) waitpid()--> by using this we can stop parent class untill child process completed
-                so after our parent process start running.
-c) exit()--> by using this we are terminating the child process just after execution.
-
-               *****WITH THREADS*****
-
-in this part we perfom same steps like in above , here just a additional step we have done is to calculate average of assignments across both the sections.
-here we have created 3 function of void type which is used in thread call.
-
-Threads :-
-a) pthread_create()--> by using this we just created 3 new thread with some arguments i.e for sectionA , sectionB and for Both so it will perform working for these functions and 
-                    calculates Average of marks for sec-A ,sec-B and for across the both sections.
-b) pthread_join()--> this is just simple use to provide clean enviromnent ( by waiting to termination of thread ) for another thread or for default execution.
-                    here we also created 3 pthread_join() i.e for Sec-A , Sec-B and for across both the sections.
+Now we created two 3x3 matrices of float type in which one is source and other is destination.
+Source matrix (Ms) have some elements while destination matrix (Md) is completely null.
+Now we add a System_call --> 'syscall(448, Ms, Md, sizeof(Md))'.
+By using this System_call we are copying the source matrix (Ms) to destination Matrix (Md).
